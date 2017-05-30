@@ -5,11 +5,14 @@
  */
 package sniffdog;
 
+import java.awt.EventQueue;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.jnetpcap.Pcap;
 import org.jnetpcap.packet.JFlow;
@@ -21,6 +24,7 @@ import org.jnetpcap.packet.PcapPacketHandler;
 import org.jnetpcap.packet.format.FormatUtils;
 import org.jnetpcap.protocol.network.Ip4;
 import org.jnetpcap.protocol.tcpip.Tcp;
+import org.jnetpcap.protocol.tcpip.Udp;
 
 /**
  *
@@ -65,8 +69,11 @@ public class FlowDiagram extends javax.swing.JFrame {
         jTextField8 = new javax.swing.JTextField();
         jTextField9 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(710, 602));
         getContentPane().setLayout(null);
 
         jPanel2.setLayout(null);
@@ -99,68 +106,98 @@ public class FlowDiagram extends javax.swing.JFrame {
             }
         ));
         jScrollPane2.setViewportView(jTable2);
+        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
-        jPanel2.add(jScrollPane2);
-        jScrollPane2.setBounds(30, 160, 570, 260);
+            @Override
 
-        jLabel5.setText("Stream");
-        jPanel2.add(jLabel5);
-        jLabel5.setBounds(160, 60, 50, 20);
-        jPanel2.add(jTextField5);
-        jTextField5.setBounds(220, 50, 100, 30);
+            public void valueChanged(ListSelectionEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
 
-        jButton2.setText("Fetch");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton2);
-        jButton2.setBounds(340, 50, 73, 23);
+                        int index=jTable2.getSelectedRow();
+                        if(index==-1){}
+                        else{
+                            int packetno=Integer.parseInt(jTable2.getValueAt(index, 0)+"");
+                            System.out.println(packetno);
+                            if (index != -1) {
+                                up.display_info(packetno);
+                            }
+                            //To change body of generated methods, choose Tools | Templates.
+                        }               }
+                    });
 
-        jLabel6.setText("Host ");
-        jPanel2.add(jLabel6);
-        jLabel6.setBounds(100, 100, 50, 14);
+                }
+            });
 
-        jLabel7.setText("Destination");
-        jPanel2.add(jLabel7);
-        jLabel7.setBounds(100, 130, 54, 14);
+            jPanel2.add(jScrollPane2);
+            jScrollPane2.setBounds(30, 160, 570, 160);
 
-        jTextField6.setEditable(false);
-        jPanel2.add(jTextField6);
-        jTextField6.setBounds(170, 90, 130, 30);
+            jLabel5.setText("Stream");
+            jPanel2.add(jLabel5);
+            jLabel5.setBounds(160, 60, 50, 20);
+            jPanel2.add(jTextField5);
+            jTextField5.setBounds(220, 50, 100, 30);
 
-        jTextField7.setEditable(false);
-        jPanel2.add(jTextField7);
-        jTextField7.setBounds(170, 120, 130, 30);
+            jButton2.setText("Fetch");
+            jButton2.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton2ActionPerformed(evt);
+                }
+            });
+            jPanel2.add(jButton2);
+            jButton2.setBounds(340, 50, 73, 23);
 
-        jLabel8.setText("Total Packets");
-        jPanel2.add(jLabel8);
-        jLabel8.setBounds(380, 100, 80, 14);
+            jLabel6.setText("Host ");
+            jPanel2.add(jLabel6);
+            jLabel6.setBounds(100, 100, 50, 14);
 
-        jTextField8.setEditable(false);
-        jPanel2.add(jTextField8);
-        jTextField8.setBounds(480, 90, 80, 30);
+            jLabel7.setText("Destination");
+            jPanel2.add(jLabel7);
+            jLabel7.setBounds(100, 130, 54, 14);
 
-        jTextField9.setEditable(false);
-        jPanel2.add(jTextField9);
-        jTextField9.setBounds(480, 120, 80, 30);
+            jTextField6.setEditable(false);
+            jPanel2.add(jTextField6);
+            jTextField6.setBounds(170, 90, 130, 30);
 
-        jLabel9.setText("Total time");
-        jPanel2.add(jLabel9);
-        jLabel9.setBounds(380, 130, 70, 14);
+            jTextField7.setEditable(false);
+            jPanel2.add(jTextField7);
+            jTextField7.setBounds(170, 120, 130, 30);
 
-        getContentPane().add(jPanel2);
-        jPanel2.setBounds(40, 20, 640, 432);
+            jLabel8.setText("Total Packets");
+            jPanel2.add(jLabel8);
+            jLabel8.setBounds(380, 100, 80, 14);
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+            jTextField8.setEditable(false);
+            jPanel2.add(jTextField8);
+            jTextField8.setBounds(480, 90, 80, 30);
+
+            jTextField9.setEditable(false);
+            jPanel2.add(jTextField9);
+            jTextField9.setBounds(480, 120, 80, 30);
+
+            jLabel9.setText("Total time");
+            jPanel2.add(jLabel9);
+            jLabel9.setBounds(380, 130, 70, 14);
+
+            jTextArea1.setColumns(20);
+            jTextArea1.setRows(5);
+            jScrollPane1.setViewportView(jTextArea1);
+
+            jPanel2.add(jScrollPane1);
+            jScrollPane1.setBounds(30, 330, 570, 220);
+
+            getContentPane().add(jPanel2);
+            jPanel2.setBounds(40, 20, 640, 560);
+
+            pack();
+        }// </editor-fold>//GEN-END:initComponents
 UI_Processing up;
 
     private void settablemodel() {
         DefaultTableModel dtm = new DefaultTableModel(new String[]{"PacketNo", "Time", "Source port", "Direction", "Destport", "Flags"}, 0);
         jTable2.setModel(dtm);
-        up = new UI_Processing(dtm);
+        up = new UI_Processing(dtm,jTextArea1);
     }
 
     private void extract_info() {
@@ -222,65 +259,58 @@ UI_Processing up;
             String dest = "";
 
             int sourceport = 0, destport = 0;
-            
+
             Ip4 ip = new Ip4();
             Tcp tcp = new Tcp();
+            Udp udp = new Udp();
             for (JPacket jp : packets) {
-               String comments = "";
-                Date date=new Date(jp.getCaptureHeader().timestampInMillis());
-                        SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss:SSS");
-                if (i == 1) {
-                    if (jp.hasHeader(ip)) {
-                        source = FormatUtils.ip(ip.source());
-                        dest = FormatUtils.ip(ip.destination());
-                        jTextField6.setText(source);
-                        jTextField7.setText(dest);
-                    }
-                    if (jp.hasHeader(tcp)) {
-                        sourceport = tcp.source();
-                        destport = tcp.destination();
-                        if (tcp.flags_ACK()) {
-                            comments += "ACK ";
-                        }
-                        if (tcp.flags_SYN()) {
-                            comments += "SYN ";
-                        }
-                        if (tcp.flags_FIN()) {
-                            comments += "FIN ";
-                        }
-                    }
-                    up.addRow(new String[]{i + "",sdf.format(date)+"" ,sourceport + "", "------>", destport + "", comments});
-                } else {
-                    String direc = "";
-                    String sourceip="";
-                    if (jp.hasHeader(ip)) {
-                        sourceip = FormatUtils.ip(ip.source());
-                        if (sourceip.equals(source)) {
-                            direc = "------>";
-                        } else {
-                            direc = "<------";
-                        }
+                String comments = "";
+                Date date = new Date(jp.getCaptureHeader().timestampInMillis());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+                String direc = "";
+                String sourceip = "", destip = "";
+                if (jp.hasHeader(ip)) {
+                    sourceip = FormatUtils.ip(ip.source());
+                    destip = FormatUtils.ip(ip.destination());
+                }
+                if (jp.hasHeader(tcp)) {
+                    sourceport = tcp.source();
+                    destport = tcp.destination();
 
+                    if (tcp.flags_ACK()) {
+                        comments += "ACK ";
                     }
-                    if (jp.hasHeader(tcp)) {
-                       sourceport = tcp.source();
-                        destport = tcp.destination();
-                        if(sourceip.equals(dest)){
-                        int temp=sourceport;sourceport=destport;destport=temp;
-                        }
-                        if (tcp.flags_ACK()) {
-                            comments += "ACK ";
-                        }
-                        if (tcp.flags_SYN()) {
-                            comments += "SYN ";
-                        }
-                        if (tcp.flags_FIN()) {
-                            comments += "FIN ";
-                        }
+                    if (tcp.flags_SYN()) {
+                        comments += "SYN ";
                     }
-                    up.addRow(new String[]{i + "", sdf.format(date)+"",sourceport + "", direc, destport + "", comments});
+                    if (tcp.flags_FIN()) {
+                        comments += "FIN ";
+                    }
+                } else if (jp.hasHeader(udp)) {
+                    sourceport = udp.source();
+                    destport = udp.destination();
+
                 }
 
+                if (sourceip.equals(source)) {
+                    direc = "--------->";
+
+                } else {
+                    direc = "<---------";
+                    int temp=sourceport;
+                    sourceport=destport;
+                    destport=temp;
+                
+                }
+                if (i == 1) {
+                    source = sourceip;
+                    dest = destip;
+                    jTextField6.setText(source);
+                    jTextField7.setText(dest);
+                    up.addRow(new String[]{jp.getState().getFrameNumber() + "", sdf.format(date) + "", sourceport + "", "--------->", destport + "", comments});
+                } else {
+                    up.addRow(new String[]{jp.getState().getFrameNumber() + "", sdf.format(date) + "", sourceport + "", direc, destport + "", comments});
+                }
                 i++;
             }
         }
@@ -333,8 +363,10 @@ UI_Processing up;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     protected static javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     protected static javax.swing.JTable jTable2;
+    private javax.swing.JTextArea jTextArea1;
     protected static javax.swing.JTextField jTextField2;
     public static javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField5;

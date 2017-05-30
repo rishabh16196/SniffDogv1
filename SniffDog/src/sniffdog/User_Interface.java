@@ -86,7 +86,7 @@ public class User_Interface extends javax.swing.JFrame {
                     @Override
                     public void run() {
 
-                        int index=jTable1.getSelectedRow();
+                        int index=jTable1.getSelectedRow()+1;
                         System.out.println(index);
                         if (index != -1) {
                             up.display_info(index);
