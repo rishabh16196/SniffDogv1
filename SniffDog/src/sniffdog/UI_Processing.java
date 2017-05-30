@@ -8,6 +8,7 @@ package sniffdog;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import org.jnetpcap.Pcap;
+import org.jnetpcap.packet.JHeader;
 import org.jnetpcap.packet.PcapPacket;
 
 /**
@@ -24,6 +25,9 @@ public class UI_Processing {
     public UI_Processing(DefaultTableModel dtm){
     this.dtm=dtm;
     }
+    public UI_Processing(JTextArea packinfo){
+    this.packet_info=packinfo;
+    }
     public void addRow(Object[] rowData){
     dtm.addRow(rowData);
     }
@@ -31,6 +35,11 @@ public class UI_Processing {
     dtm.setRowCount(0);}
     public void display_info(int i){
     packet_info.setText(Pcap_File_Processing.p[i].toString());
+    packet_info.setCaretPosition(0);
+    }
+    public void display_info(int i,JHeader protocol){
+    
+    packet_info.setText(Pcap_File_Processing.p[i].getHeader(protocol).toString());
     packet_info.setCaretPosition(0);
     }
 }
